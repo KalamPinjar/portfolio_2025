@@ -1,26 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { HeroSection } from "@/components/hero-section";
-import { DraggableSkills } from "@/components/draggable-skills";
 import { ProjectsSection } from "@/components/projects-section";
 import { AuroraBackground } from "@/components/aurora-background";
 import { ContactSection } from "@/components/contact-section";
 import { Navigation } from "@/components/navigation";
+import DraggableSkills from "@/components/draggable-skills";
 
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState("hero");
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent): void => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
 
   return (
     <div className="relative min-h-screen overflow-hidden text-white">
@@ -35,7 +25,7 @@ export default function Portfolio() {
           }}
           className="relative flex flex-col justify-center items-center gap-4 px-4 w-full"
         >
-          <HeroSection {...mousePosition} />
+          <HeroSection />
         </motion.div>
       </AuroraBackground>
       <Navigation

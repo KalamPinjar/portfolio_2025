@@ -1,29 +1,48 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { TypewriterText } from "@/components/typewriter-text";
-import { FloatingText, MouseCoordinates } from "@/components/floating-text";
 import { SparklesPreview } from "./sparkles-text";
-export function HeroSection(mousePosition: MouseCoordinates) {
+import { ThreeDMarquee } from "./3d-marquee";
+export function HeroSection() {
+  const images = [
+    "https://assets.aceternity.com/cloudinary_bkp/3d-card.png",
+    "https://assets.aceternity.com/animated-modal.png",
+    "https://assets.aceternity.com/animated-testimonials.webp",
+    "https://assets.aceternity.com/cloudinary_bkp/Tooltip_luwy44.png",
+    "https://assets.aceternity.com/github-globe.png",
+    "https://assets.aceternity.com/glare-card.png",
+    "https://assets.aceternity.com/layout-grid.png",
+    "https://assets.aceternity.com/flip-text.png",
+    "https://assets.aceternity.com/hero-highlight.png",
+    "https://assets.aceternity.com/carousel.webp",
+    "https://assets.aceternity.com/placeholders-and-vanish-input.png",
+    "https://assets.aceternity.com/shooting-stars-and-stars-background.png",
+    "https://assets.aceternity.com/signup-form.png",
+    "https://assets.aceternity.com/cloudinary_bkp/stars_sxle3d.png",
+    "https://assets.aceternity.com/spotlight-new.webp",
+    "https://assets.aceternity.com/cloudinary_bkp/Spotlight_ar5jpr.png",
+    "https://assets.aceternity.com/cloudinary_bkp/Parallax_Scroll_pzlatw_anfkh7.png",
+    "https://assets.aceternity.com/tabs.png",
+    "https://assets.aceternity.com/cloudinary_bkp/Tracing_Beam_npujte.png",
+    "https://assets.aceternity.com/cloudinary_bkp/typewriter-effect.png",
+    "https://assets.aceternity.com/glowing-effect.webp",
+    "https://assets.aceternity.com/hover-border-gradient.png",
+    "https://assets.aceternity.com/cloudinary_bkp/Infinite_Moving_Cards_evhzur.png",
+    "https://assets.aceternity.com/cloudinary_bkp/Lamp_hlq3ln.png",
+    "https://assets.aceternity.com/macbook-scroll.png",
+    "https://assets.aceternity.com/cloudinary_bkp/Meteors_fye3ys.png",
+    "https://assets.aceternity.com/cloudinary_bkp/Moving_Border_yn78lv.png",
+    "https://assets.aceternity.com/multi-step-loader.png",
+    "https://assets.aceternity.com/vortex.png",
+    "https://assets.aceternity.com/wobble-card.png",
+    "https://assets.aceternity.com/world-map.webp",
+  ];
   return (
     <section className="relative flex flex-col justify-center items-center h-screen overflow-hidden text-white dark:text-black">
       <SparklesPreview />
-      <div className="-top-64 z-10 relative text-center">
-        <motion.h1
-          className="mb-6 font-bold text-6xl md:text-8xl"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.1, delay: 0.1 }}
-        >
-          <TypewriterText
-            text={"Developer"}
-            className="text-black dark:text-white"
-            delay={100}
-          />
-        </motion.h1>
-
+      <div className="-top-[5rem] z-10 relative text-center">
         <motion.p
-          className="mx-auto mb-8 max-w-2xl text-gray-300 text-xl md:text-2xl"
+          className="mx-auto mb-8 max-w-2xl text-gray-600 dark:text-gray-300 text-xl md:text-2xl"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
@@ -43,8 +62,7 @@ export function HeroSection(mousePosition: MouseCoordinates) {
           Explore My Work
         </motion.button>
       </div>
-
-      <FloatingText {...mousePosition} />
+      <ThreeDMarquee images={images} />
     </section>
   );
 }
