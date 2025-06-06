@@ -1,53 +1,55 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Mail, Github, Linkedin, Twitter } from "lucide-react"
+import { motion } from "framer-motion";
+import { Mail, Github, Linkedin, Twitter } from "lucide-react";
+import { RippleButton } from "./ripple-button";
 
 const socialLinks = [
   { icon: Github, href: "#", label: "GitHub" },
   { icon: Linkedin, href: "#", label: "LinkedIn" },
   { icon: Twitter, href: "#", label: "Twitter" },
   { icon: Mail, href: "#", label: "Email" },
-]
+];
 
 export function ContactSection() {
   return (
-    <section className="py-20 px-4">
-      <div className="max-w-4xl mx-auto text-center">
+    <section className="px-4 py-18">
+      <div className="flex flex-col items-center mx-auto w-full max-w-4xl text-center">
         <motion.h2
-          className="text-4xl md:text-6xl font-bold mb-8"
+          className="mb-4 font-bold text-4xl md:text-6xl"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <span className="bg-gradient-to-r from-pink-400 to-purple-500 bg-clip-text text-transparent">
-            Let's Connect
+          <span className="bg-clip-text bg-gradient-to-r from-pink-400 to-purple-500 text-transparent">
+            Let&apos;s Connect
           </span>
         </motion.h2>
 
         <motion.p
-          className="text-xl text-gray-400 mb-12"
+          className="mb-4 text-gray-400 text-xl"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           viewport={{ once: true }}
         >
-          Ready to bring your ideas to life? Let's create something amazing together.
+          Ready to bring your ideas to life? Let&apos;s create something amazing
+          together.
         </motion.p>
 
         <motion.div
-          className="flex justify-center gap-6 mb-12"
+          className="flex justify-center gap-6 mb-6"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
           viewport={{ once: true }}
         >
-          {socialLinks.map((link, index) => (
+          {socialLinks.map((link) => (
             <motion.a
               key={link.label}
               href={link.href}
-              className="p-4 bg-gray-800/50 rounded-full border border-white/10 hover:border-purple-500/50 transition-colors"
+              className="bg-gray-800/50 p-4 border border-white/10 hover:border-purple-500/50 rounded-full transition-colors"
               whileHover={{ scale: 1.1, y: -5 }}
               whileTap={{ scale: 0.95 }}
               data-cursor="pointer"
@@ -57,19 +59,38 @@ export function ContactSection() {
           ))}
         </motion.div>
 
-        <motion.button
-          className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-white font-semibold hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
-          initial={{ opacity: 0, scale: 0.8 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          viewport={{ once: true }}
+        <RippleButton
+          className="hover:bg-white hover:text-black transition-all duration-300"
+          variant="primary"
+          rippleColor="red"
+          size="lg"
           data-cursor="pointer"
         >
           Get In Touch
-        </motion.button>
+        </RippleButton>
+
+        {/* Map Section */}
+        <motion.div
+          className="mt-6 w-full"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          viewport={{ once: true }}
+        >
+          <div className="-bottom-10 relative shadow-lg border border-gray-700 rounded-lg w-full overflow-hidden">
+            <iframe
+              title="Taloja Phase 2 Location Map"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3769.315385107105!2d73.15236027475793!3d19.136110482084728!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7e99ec369c601%3A0x3282b527b96f7cb7!2sTaloja%20Phase%202%2C%20Navi%20Mumbai%2C%20Maharashtra%20410208!5e0!3m2!1sen!2sin!4v1717686600552!5m2!1sen!2sin"
+              width="100%"
+              height="400"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+        </motion.div>
       </div>
     </section>
-  )
+  );
 }

@@ -14,14 +14,10 @@
   --color-sidebar: var(--sidebar);
   @keyframes aurora {
     from {
-      background-position:
-        50% 50%,
-        50% 50%;
+      background-position: 50% 50%, 50% 50%;
     }
     to {
-      background-position:
-        350% 50%,
-        350% 50%;
+      background-position: 350% 50%, 350% 50%;
     }
   }
 }
@@ -141,4 +137,8 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+body {
+  scroll-behavior: smooth;
 }

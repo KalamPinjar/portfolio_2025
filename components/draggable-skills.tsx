@@ -1,283 +1,72 @@
-import React, { useState, useRef, useEffect } from "react";
+"use client";
+
+import { useState } from "react";
 import { motion } from "framer-motion";
+import { initialSkills, Skill } from "@/constant/skills";
+import Image from "next/image";
 
-interface Skill {
-  id: string;
-  name: string;
-  level: number;
-  icon: string;
-  category: string;
-  x: number;
-  y: number;
-}
+const COLS = 8;
+const CARD_SIZE = 140;
+const PADDING = 20;
 
-const initialSkills: Skill[] = [
-  {
-    id: "1",
-    name: "React",
-    level: 95,
-    icon: "⚛️",
-    category: "Frontend",
-    x: 20,
-    y: 20,
-  },
-  {
-    id: "2",
-    name: "Next.js",
-    level: 90,
-    icon: "▲",
-    category: "Frontend",
-    x: 170,
-    y: 20,
-  },
-  {
-    id: "3",
-    name: "TypeScript",
-    level: 88,
-    icon: "📘",
-    category: "Language",
-    x: 320,
-    y: 20,
-  },
-  {
-    id: "4",
-    name: "Node.js",
-    level: 80,
-    icon: "🟢",
-    category: "Backend",
-    x: 470,
-    y: 20,
-  },
-  {
-    id: "5",
-    name: "PostgreSQL",
-    level: 85,
-    icon: "🐘",
-    category: "Database",
-    x: 20,
-    y: 170,
-  },
-  {
-    id: "6",
-    name: "AWS",
-    level: 78,
-    icon: "☁️",
-    category: "Cloud",
-    x: 170,
-    y: 170,
-  },
-  {
-    id: "7",
-    name: "Docker",
-    level: 82,
-    icon: "🐳",
-    category: "DevOps",
-    x: 320,
-    y: 170,
-  },
-  {
-    id: "8",
-    name: "Python",
-    level: 86,
-    icon: "🐍",
-    category: "Language",
-    x: 470,
-    y: 170,
-  },
-  {
-    id: "9",
-    name: "MongoDB",
-    level: 83,
-    icon: "🍃",
-    category: "Database",
-    x: 20,
-    y: 320,
-  },
-  {
-    id: "10",
-    name: "GraphQL",
-    level: 79,
-    icon: "🕸️",
-    category: "API",
-    x: 170,
-    y: 320,
-  },
-  {
-    id: "11",
-    name: "Kafka",
-    level: 75,
-    icon: "🧩",
-    category: "Streaming",
-    x: 320,
-    y: 320,
-  },
-  {
-    id: "12",
-    name: "Redis",
-    level: 74,
-    icon: "🟥",
-    category: "Cache",
-    x: 470,
-    y: 320,
-  },
-  {
-    id: "13",
-    name: "Tailwind",
-    level: 92,
-    icon: "🎨",
-    category: "CSS",
-    x: 20,
-    y: 470,
-  },
-  {
-    id: "14",
-    name: "Vue.js",
-    level: 72,
-    icon: "🟩",
-    category: "Frontend",
-    x: 170,
-    y: 470,
-  },
-  {
-    id: "15",
-    name: "Express",
-    level: 84,
-    icon: "⚡",
-    category: "Backend",
-    x: 320,
-    y: 470,
-  },
-  {
-    id: "16",
-    name: "Git",
-    level: 90,
-    icon: "🌿",
-    category: "VCS",
-    x: 470,
-    y: 470,
-  },
-  {
-    id: "17",
-    name: "Firebase",
-    level: 77,
-    icon: "🔥",
-    category: "Cloud",
-    x: 620,
-    y: 20,
-  },
-  {
-    id: "18",
-    name: "Jest",
-    level: 81,
-    icon: "🃏",
-    category: "Testing",
-    x: 620,
-    y: 170,
-  },
-  {
-    id: "19",
-    name: "Figma",
-    level: 85,
-    icon: "🎭",
-    category: "Design",
-    x: 620,
-    y: 320,
-  },
-  {
-    id: "20",
-    name: "Linux",
-    level: 79,
-    icon: "🐧",
-    category: "OS",
-    x: 620,
-    y: 470,
-  },
-];
-
-function DraggableSkillCard({
+function SkillCard({
   skill,
   index,
-  onPositionUpdate,
-  containerRef,
+  onDragEnd,
 }: {
   skill: Skill;
   index: number;
-  onPositionUpdate: (id: string, x: number, y: number) => void;
-  containerRef: React.RefObject<HTMLDivElement | null>;
+  onDragEnd: (draggedId: string, targetPosition: number) => void;
 }) {
   const [isDragging, setIsDragging] = useState(false);
 
-  const isValidPosition = (x: number, y: number) => {
-    if (!containerRef.current) return false;
-
-    const containerRect = containerRef.current.getBoundingClientRect();
-    const cardSize = 128; // 32 * 4 (w-32 h-32)
-    const padding = 10;
-
-    return (
-      x >= padding &&
-      y >= padding &&
-      x + cardSize <= containerRect.width - padding &&
-      y + cardSize <= containerRect.height - padding
-    );
-  };
-
-  const handleDragEnd = (event: any, info: any) => {
-    setIsDragging(false);
-
-    // Calculate new position based on current position + drag offset
-    const newX = skill.x + info.offset.x;
-    const newY = skill.y + info.offset.y;
-
-    if (isValidPosition(newX, newY)) {
-      // Update position if valid
-      onPositionUpdate(skill.id, newX, newY);
-    }
-    // If invalid, framer-motion will automatically snap back due to animate prop
-  };
+  // Calculate grid position
+  const col = skill.position % COLS;
+  const row = Math.floor(skill.position / COLS);
+  const x = col * CARD_SIZE + PADDING;
+  const y = row * CARD_SIZE + PADDING;
 
   return (
     <motion.div
       className={`
         absolute w-32 h-32 rounded-lg flex flex-col items-center justify-center
-        bg-gradient-to-br from-gray-700 to-gray-900 border border-white/20 shadow-md
+        bg-gradient-to-br dark:from-gray-700 dark:to-gray-900 border border-white/20 from-gray-200 to-gray-500  shadow-md
         cursor-grab active:cursor-grabbing select-none
         ${isDragging ? "z-50 shadow-2xl" : "hover:shadow-lg"}
         transition-shadow duration-200
       `}
-      style={{
-        touchAction: "none",
-      }}
-      // Position the card using framer-motion's animate prop
-      animate={{
-        x: skill.x,
-        y: skill.y,
-        scale: 1,
-        rotate: 0,
-      }}
+      style={{ touchAction: "none" }}
+      animate={{ x, y }}
       drag
       dragMomentum={false}
-      dragElastic={0.2}
-      dragConstraints={containerRef}
-      onDragStart={() => {
-        setIsDragging(true);
+      dragElastic={0.1}
+      onDragStart={() => setIsDragging(true)}
+      onDragEnd={(_, info) => {
+        setIsDragging(false);
+
+        // Calculate drop position
+        const dropX = x + info.offset.x;
+        const dropY = y + info.offset.y;
+
+        // Find target grid position
+        const targetCol = Math.round((dropX - PADDING) / CARD_SIZE);
+        const targetRow = Math.round((dropY - PADDING) / CARD_SIZE);
+        const targetPosition = Math.max(
+          0,
+          Math.min(34, targetRow * COLS + targetCol)
+        );
+
+        if (targetPosition !== skill.position) {
+          onDragEnd(skill.id, targetPosition);
+        }
       }}
-      onDragEnd={handleDragEnd}
-      initial={{
-        opacity: 0,
-        scale: 0.8,
-        x: skill.x,
-        y: skill.y,
-      }}
-      whileInView={{
-        opacity: 1,
-        scale: 1,
-      }}
+      initial={{ opacity: 0, scale: 0.8, x, y }}
+      whileInView={{ opacity: 1, scale: 1 }}
       transition={{
         delay: index * 0.03,
         type: "spring",
-        stiffness: 400,
-        damping: 25,
+        stiffness: 350,
+        damping: 15,
       }}
       whileHover={{
         scale: isDragging ? 1.1 : 1.05,
@@ -310,20 +99,30 @@ function DraggableSkillCard({
       {/* Content */}
       <div className="text-center pointer-events-none">
         <div className="mb-1 text-2xl">{skill.icon}</div>
-        <h3 className="mb-1 px-1 font-semibold text-white text-sm leading-tight">
+        <h3 className="mb-1 px-1 font-semibold text-black dark:text-white text-sm leading-tight">
           {skill.name}
         </h3>
-        <div className="text-white/80 text-xs">{skill.level}%</div>
+        <div
+          className={`text-xs font-medium ${
+            skill.unlocked
+              ? "dark:text-green-400 text-green-800 text-shadow-2xs "
+              : "dark:text-amber-400 text-amber-800 text-shadow-2xs"
+          }`}
+        >
+          {skill.unlocked ? "Unlocked" : "In Progress"}
+        </div>
       </div>
 
-      {/* Progress Bar */}
+      {/* Status indicator bar */}
       <div className="right-2 bottom-2 left-2 absolute pointer-events-none">
         <div className="bg-white/20 rounded-full w-full h-1">
           <motion.div
-            className="bg-white rounded-full h-full"
+            className={`rounded-full h-full ${
+              skill.unlocked ? "bg-green-400" : "bg-amber-400"
+            }`}
             initial={{ width: 0 }}
-            animate={{ width: `${skill.level}%` }}
-            transition={{ duration: 1, delay: index * 0.05 + 0.3 }}
+            animate={{ width: skill.unlocked ? "100%" : "40%" }}
+            transition={{ duration: 0.4, delay: index * 0.05 + 0.3 }}
           />
         </div>
       </div>
@@ -336,91 +135,138 @@ function DraggableSkillCard({
   );
 }
 
-export default function DraggableSkillsFreeFlow() {
+export default function DraggableSkillsGrid() {
   const [skills, setSkills] = useState(initialSkills);
-  const containerRef = useRef<HTMLDivElement>(null);
 
-  const handlePositionUpdate = (id: string, x: number, y: number) => {
-    setSkills((prevSkills) =>
-      prevSkills.map((skill) => (skill.id === id ? { ...skill, x, y } : skill))
-    );
+  const handleDragEnd = (draggedId: string, targetPosition: number) => {
+    setSkills((prevSkills) => {
+      const newSkills = [...prevSkills];
+      const draggedIndex = newSkills.findIndex((s) => s.id === draggedId);
+      const targetIndex = newSkills.findIndex(
+        (s) => s.position === targetPosition
+      );
+
+      if (draggedIndex !== -1) {
+        if (targetIndex !== -1) {
+          // Swap positions
+          const temp = newSkills[draggedIndex].position;
+          newSkills[draggedIndex].position = newSkills[targetIndex].position;
+          newSkills[targetIndex].position = temp;
+        } else {
+          // Move to empty position
+          newSkills[draggedIndex].position = targetPosition;
+        }
+      }
+
+      return newSkills;
+    });
   };
 
   const resetPositions = () => {
     setSkills((prevSkills) =>
       prevSkills.map((skill, index) => ({
         ...skill,
-        x: (index % 5) * 150 + 20,
-        y: Math.floor(index / 5) * 150 + 20,
+        position: index,
       }))
     );
   };
 
   const randomizePositions = () => {
-    if (!containerRef.current) return;
+    setSkills((prevSkills) => {
+      const newSkills = [...prevSkills];
+      const positions = Array.from({ length: skills.length }, (_, i) => i);
 
-    const containerRect = containerRef.current.getBoundingClientRect();
-    const cardSize = 128;
-    const padding = 20;
+      // Fisher-Yates shuffle
+      for (let i = positions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [positions[i], positions[j]] = [positions[j], positions[i]];
+      }
 
-    setSkills((prevSkills) =>
-      prevSkills.map((skill) => ({
+      return newSkills.map((skill, index) => ({
         ...skill,
-        x:
-          Math.random() * (containerRect.width - cardSize - padding * 2) +
-          padding,
-        y:
-          Math.random() * (containerRect.height - cardSize - padding * 2) +
-          padding,
-      }))
-    );
+        position: positions[index],
+      }));
+    });
   };
 
+  // const toggleRandomSkill = () => {
+  //   const randomId = skills[Math.floor(Math.random() * skills.length)].id;
+  //   setSkills((prevSkills) =>
+  //     prevSkills.map((skill) =>
+  //       skill.id === randomId ? { ...skill, unlocked: !skill.unlocked } : skill
+  //     )
+  //   );
+  // };
+
+  // Calculate container height based on rows needed
+  const rows = Math.ceil(skills.length / COLS);
+  const containerHeight = rows * CARD_SIZE + PADDING * 2;
+
   return (
-    <section className="relative bg-gray-50 px-4 py-16 min-h-screen">
-      <div className="mx-auto max-w-7xl">
+    <section className="relative bg-gray-50 dark:bg-black px-4 py-16 h-full">
+      <div className="rounded-2xl">
+        <Image
+          src={"/images/blob1.png"}
+          alt="skill-bg"
+          width={1800}
+          height={20}
+          className="top-10 left-14 z-0 absolute rounded-t-2xl mix-blend-difference dark:mix-blend-normal"
+        />
+        <Image
+          src={"/images/blob1.png"}
+          alt="skill-bg"
+          width={1800}
+          height={20}
+          className="top-[48%] left-14 z-0 absolute rounded-b-2xl rotate-x-180 mix-blend-difference dark:mix-blend-normal"
+        />
+      </div>
+      <div className="mx-auto mt-10 max-w-[72rem]">
         <motion.div
           className="mb-8 text-center"
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          whileInView={{ opacity: 1, y: 1 }}
+          transition={{ duration: 0.2 }}
           viewport={{ once: true }}
         >
-          <h2 className="mb-4 font-bold text-gray-900 text-3xl">
-            Technical Skills Playground
+          <h2 className="mb-4 font-bold text-gray-900 dark:text-gray-300 text-3xl">
+            Technical Skills Grid
           </h2>
-          <p className="mx-auto mb-4 max-w-2xl text-gray-600">
-            Drag any skill card freely around the canvas. Invalid positions will
-            snap back automatically.
+          <p className="mx-auto mb-4 max-w-2xl text-gray-600 dark:text-gray-400">
+            Drag any skill card to swap positions.
           </p>
           <div className="flex justify-center gap-3">
             <button
               onClick={resetPositions}
-              className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg text-white transition-colors duration-200"
+              className="z-[9999] bg-primary/50 hover:bg-primary/60 px-4 py-2 rounded-lg text-white transition-colors duration-200"
             >
               Reset Grid
             </button>
             <button
               onClick={randomizePositions}
-              className="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg text-white transition-colors duration-200"
+              className="z-[9999] bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg text-white transition-colors duration-200"
             >
               Randomize
             </button>
+            {/* <button
+              onClick={toggleRandomSkill}
+              className="bg-amber-500 hover:bg-amber-600 px-4 py-2 rounded-lg text-white transition-colors duration-200"
+            >
+              Toggle Random Skill
+            </button> */}
           </div>
         </motion.div>
 
-        {/* Draggable container */}
+        {/* Grid container */}
         <div
-          ref={containerRef}
-          className="relative bg-white/50 backdrop-blur-sm border-2 border-gray-300 border-dashed rounded-xl w-full h-[700px] overflow-hidden"
+          className="relative bg-white/50 dark:bg-black/50 backdrop-blur-sm border-2 border-gray-300 border-dashed rounded-xl w-full overflow-hidden"
+          style={{ height: containerHeight }}
         >
           {skills.map((skill, index) => (
-            <DraggableSkillCard
+            <SkillCard
               key={skill.id}
               skill={skill}
               index={index}
-              onPositionUpdate={handlePositionUpdate}
-              containerRef={containerRef}
+              onDragEnd={handleDragEnd}
             />
           ))}
         </div>
@@ -428,13 +274,13 @@ export default function DraggableSkillsFreeFlow() {
         <motion.div
           className="mt-6 text-center"
           initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          whileInView={{ opacity: 1, y: 1 }}
           transition={{ duration: 0.6, delay: 0.3 }}
           viewport={{ once: true }}
         >
           <p className="text-gray-500 text-sm">
-            💡 Drag skills anywhere within the canvas • Invalid drops will
-            return to previous position
+            💡 Drag skills to swap positions • Green indicates unlocked skills •
+            Amber shows skills in progress
           </p>
         </motion.div>
       </div>

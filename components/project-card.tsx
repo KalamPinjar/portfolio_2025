@@ -20,7 +20,7 @@ interface ProjectCardProps {
 export function ProjectCard({ project, index }: ProjectCardProps) {
   return (
     <motion.div
-      className="group relative overflow-hidden rounded-xl bg-gray-900/50 backdrop-blur-sm border border-white/10"
+      className="group relative bg-gray-900/50 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
@@ -31,13 +31,13 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
         <motion.img
           src={project.image}
           alt={project.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
       </div>
 
       <div className="p-6">
-        <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
-        <p className="text-gray-400 mb-4 text-sm">{project.description}</p>
+        <h3 className="mb-2 font-bold text-white text-xl">{project.title}</h3>
+        <p className="mb-4 text-gray-400 text-sm">{project.description}</p>
 
         <div className="flex flex-wrap gap-2 mb-4">
           {project.technologies.map((tech) => (
