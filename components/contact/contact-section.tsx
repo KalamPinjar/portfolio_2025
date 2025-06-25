@@ -1,14 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, Github, Linkedin, Twitter } from "lucide-react";
-import { RippleButton } from "./ripple-button";
-
+import { Github, Linkedin, Mail } from "lucide-react";
+import { RippleButton } from "../ripple-button";
 const socialLinks = [
-  { icon: Github, href: "#", label: "GitHub" },
-  { icon: Linkedin, href: "#", label: "LinkedIn" },
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Mail, href: "#", label: "Email" },
+  { icon: Github, href: "https://github.com/KalamPinjar", label: "GitHub" },
+  {
+    icon: Linkedin,
+    href: "https://www.linkedin.com/in/kalam-pinjar-100178207/",
+    label: "LinkedIn",
+  },
 ];
 
 export function ContactSection() {
@@ -22,9 +23,7 @@ export function ContactSection() {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <span className="bg-clip-text bg-gradient-to-r from-pink-400 to-purple-500 text-transparent">
-            Let&apos;s Connect
-          </span>
+          <span className="text-black dark:text-white">Let&apos;s Connect</span>
         </motion.h2>
 
         <motion.p
@@ -53,10 +52,19 @@ export function ContactSection() {
               whileHover={{ scale: 1.1, y: -5 }}
               whileTap={{ scale: 0.95 }}
               data-cursor="pointer"
+              target="_blank"
             >
               <link.icon size={24} className="text-white" />
             </motion.a>
           ))}
+            <motion.div
+            className="flex gap-2 bg-gray-800/50 p-4 border border-white/10 hover:border-purple-500/50 rounded-full transition-colors"
+            whileHover={{ scale: 1.1, y: -5 }}
+            whileTap={{ scale: 0.95 }}
+            data-cursor="pointer"
+          >
+            <Mail />:  owaiskal57@gmail.com
+          </motion.div>
         </motion.div>
 
         <RippleButton

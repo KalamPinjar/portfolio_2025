@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { HeroSection } from "@/components/hero-section";
-import { ProjectsSection } from "@/components/projects-section";
-import { AuroraBackground } from "@/components/aurora-background";
-import { ContactSection } from "@/components/contact-section";
-import { Navigation } from "@/components/navigation";
-import DraggableSkills from "@/components/draggable-skills";
+import { HeroSection } from "@/components/hero/hero-section";
+import { ProjectsSection } from "@/components/project/projects-section";
+import { AuroraBackground } from "@/components/shared/aurora-background";
+import { ContactSection } from "@/components/contact/contact-section";
+import { Navigation } from "@/components/shared/navigation";
+import DraggableSkills from "@/components/skills/draggable-skills";
+import AboutMe from "@/components/about/about";
 
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState("hero");
@@ -62,9 +63,40 @@ export default function Portfolio() {
                 }}
                 className="relative flex flex-col justify-center items-center gap-4 px-4 w-full"
               >
-                <HeroSection />
+                <HeroSection setActiveSection={setActiveSection} />
               </motion.div>
             </AuroraBackground>
+          </motion.div>
+        );
+
+      case "about":
+        return (
+          <motion.div
+            key="skills"
+            initial="initial"
+            animate="in"
+            exit="out"
+            variants={pageVariants}
+            transition={pageTransition}
+            className="flex justify-center items-center w-full h-full"
+          >
+            <div className="relative w-full h-screen">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(120,119,198,0.3),transparent_50%)]" />
+              <div className="z-10 relative py-10 w-full h-full overflow-y-scroll">
+                <motion.div
+                  initial={{ opacity: 0.0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{
+                    delay: 0.3,
+                    duration: 0.8,
+                    ease: "easeInOut",
+                  }}
+                  className="relative flex flex-col justify-center items-center gap-4 px-4 w-full"
+                >
+                  <AboutMe />
+                </motion.div>
+              </div>
+            </div>
           </motion.div>
         );
 
@@ -79,7 +111,7 @@ export default function Portfolio() {
             transition={pageTransition}
             className="flex justify-center items-center w-full h-full"
           >
-            <div className="relative bg-white dark:bg-black w-full h-full">
+            <div className="relative w-full h-full">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(120,119,198,0.3),transparent_50%)]" />
               <div className="z-10 relative w-full h-full">
                 <DraggableSkills />
@@ -99,7 +131,7 @@ export default function Portfolio() {
             transition={pageTransition}
             className="flex justify-center items-center w-full h-full overflow-y-auto"
           >
-            <div className="relative bg-white dark:bg-black w-full h-full">
+            <div className="relative w-full h-full">
               <div className="z-10 relative w-full h-full">
                 <ProjectsSection />
               </div>
@@ -118,10 +150,10 @@ export default function Portfolio() {
             transition={pageTransition}
             className="flex justify-center items-center w-full h-full"
           >
-            <div className="relative bg-gradient-to-br from-emerald-900 via-slate-900 to-gray-900 m-10 rounded-2xl w-full h-full">
-              <div className="z-10 relative w-full h-fit">
+            <div className="relative mx-10 rounded-2xl w-full h-full">
+              <AuroraBackground>
                 <ContactSection />
-              </div>
+              </AuroraBackground>
             </div>
           </motion.div>
         );
@@ -148,7 +180,7 @@ export default function Portfolio() {
                 }}
                 className="relative flex flex-col justify-center items-center gap-4 px-4 w-full"
               >
-                <HeroSection />
+                <HeroSection setActiveSection={setActiveSection} />
               </motion.div>
             </AuroraBackground>
           </motion.div>

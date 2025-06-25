@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ProjectCard } from "@/components/project-card";
+import { ProjectCard } from "@/components/project/project-card";
 
 const projects = [
   {
@@ -37,7 +37,7 @@ export function ProjectsSection() {
   return (
     <section className="relative bg-white dark:bg-black px-4 py-20 h-screen">
       <video
-        className="top-0 left-0 z-0 absolute"
+        className="top-0 left-0 z-0 absolute mix-blend-difference"
         autoPlay
         loop
         muted

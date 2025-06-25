@@ -1,8 +1,12 @@
 "use client";
 
-import { SparklesPreview } from "./sparkles-text";
+import { SparklesPreview } from "../sparkles-text";
 import { ThreeDMarquee } from "./3d-marquee";
-export function HeroSection() {
+interface SparklesPreviewProps {
+  setActiveSection: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export function HeroSection({ setActiveSection }: SparklesPreviewProps) {
   const images = [
     "https://assets.aceternity.com/cloudinary_bkp/3d-card.png",
     "https://assets.aceternity.com/animated-modal.png",
@@ -35,8 +39,8 @@ export function HeroSection() {
     "https://assets.aceternity.com/world-map.webp",
   ];
   return (
-    <section className="z-[9999999] relative flex flex-col justify-center items-center w-full h-full overflow-hidden text-white dark:text-black">
-      <SparklesPreview />
+    <section className="relative flex flex-col justify-center items-center w-full overflow-hidden text-white dark:text-black">
+      <SparklesPreview setActiveSection={setActiveSection} />
 
       <ThreeDMarquee images={images} />
     </section>

@@ -2,7 +2,8 @@
 
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { ModeToggle } from "./mode-toggle";
+import Link from "next/link";
+import { Button } from "../ui/button";
 
 interface NavigationProps {
   activeSection: string;
@@ -12,6 +13,7 @@ interface NavigationProps {
 const navItems = [
   { id: "hero", label: "Home" },
   { id: "skills", label: "Skills" },
+  { id: "about", label: "About" },
   { id: "projects", label: "Projects" },
   { id: "contact", label: "Contact" },
 ];
@@ -65,7 +67,7 @@ export function Navigation({
           {navItems.map((item) => (
             <motion.button
               key={item.id}
-              className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
+              className={`relative px-4 py-2 cursor-pointer rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
                 activeSection === item.id
                   ? "bg-white text-black shadow-lg"
                   : "text-white hover:bg-white/10"
@@ -78,7 +80,7 @@ export function Navigation({
               <span className="hidden sm:inline">{item.label}</span>
               {activeSection === item.id && (
                 <motion.div
-                  className="-bottom-1 left-1/2 absolute bg-black rounded-full w-1 h-1 -translate-x-1/2 transform"
+                  className="-bottom-1 left-1/2 absolute bg-white border-2 rounded-full w-1 h-1 -translate-x-1/2 transform"
                   layoutId="activeIndicator"
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 />
@@ -86,9 +88,20 @@ export function Navigation({
             </motion.button>
           ))}
 
-          <div className="bg-white/20 mx-1 w-px h-6" />
-
-          <ModeToggle />
+          <div className="bg-white mx-1 w-px h-6" />
+          <Link
+            href={
+              "https://www.canva.com/design/DAGNCkSf9dQ/Z4c3U1y6NGebjHtdTHpjtg/view?utm_content=DAGNCkSf9dQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hc79902f465"
+            }
+            target="_blank"
+          >
+            <Button
+              className="bg-yellow-600 hover:bg-yellow-500 px-4 py-2 rounded-full text-white text-xs transition-all duration-300 cursor-pointer"
+              data-cursor="pointer"
+            >
+              Resume
+            </Button>
+          </Link>
         </div>
       </motion.nav>
 
@@ -99,7 +112,7 @@ export function Navigation({
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 1.5 }}
       >
-        <div className="flex flex-col items-center gap-2 bg-black/20 backdrop-blur-md p-3 border border-white/10 rounded-2xl">
+        <div className="flex flex-col items-center gap-2 bg-black/80 dark:bg-black/20 backdrop-blur-md p-3 border border-white/10 rounded-2xl">
           <div className="font-medium text-white/60 text-xs">
             {navItems.find((item) => item.id === activeSection)?.label}
           </div>
@@ -126,7 +139,7 @@ export function Navigation({
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8, delay: 2 }}
       >
-        <div className="bg-black/20 backdrop-blur-md p-3 border border-white/10 rounded-2xl">
+        <div className="bg-black/80 dark:bg-black/20 backdrop-blur-md p-3 border dark:border-white/10 rounded-2xl">
           <div className="mb-2 font-medium text-white/60 text-xs">
             Navigation
           </div>
@@ -136,6 +149,8 @@ export function Navigation({
           </div>
         </div>
       </motion.div>
+
+      {/* resume download button */}
     </div>
   );
 }
